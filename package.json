@@ -1,0 +1,9 @@
+{
+  "name": "packdev-demo-nestjs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live Dependabot target for packdev-agents — NestJS apps/ monorepo (Nest's own convention, distinct from the npm-workspaces packages/ layout used by packdev-demo-express).",
+  "workspaces": [
+    "apps/*"
+  ]
+}
