@@ -33,6 +33,27 @@ referenced) needs to be public.
   input** — packdev-agents auto-discovers which app actually changed from
   the diff itself.
 
+## Verified locally before ever touching GitHub
+
+Two real `@nestjs/core` bumps were run through packdev-agents' actual
+`runGithubPipeline`, against real commits on throwaway branches of this
+exact repo, with a fake GitHub sink (no GitHub API calls) — **without**
+passing `packageJsonPath`:
+
+- `apps/gateway`: `11.0.0` → `11.0.21` (same-minor patch bump) →
+  auto-discovered `apps/gateway/package.json`, verdict `PASSED`, auto-merge
+  eligible.
+- `apps/notifier`: `11.0.0` → `11.2.3` (`@nestjs/core` alone, without moving
+  `@nestjs/common`/`@nestjs/platform-express` in lockstep) → auto-discovered
+  `apps/notifier/package.json`, verdict `INCOMPATIBLE` — a genuine runtime
+  break (`Cannot find module '@nestjs/common/decorators/http/sse-signal.decorator'`)
+  that satisfies Nest's own `^11.0.0` peer ranges but breaks at runtime
+  anyway. packdev caught it for real; this wasn't staged.
+
+Both verification branches were then deleted — `master` stays at the
+pre-bump state (`@nestjs/core@11.0.0` in both apps) so a real Dependabot run
+has something genuine to propose.
+
 ## To go live
 
 1. Push `packdev-agents` to `github.com/dionmaicon/packdev-agents` (public)
