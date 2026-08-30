@@ -10,12 +10,16 @@ permissions:
 
 jobs:
   compat:
-    if: github.actor == 'dependabot[bot]'
+    # TEMPORARY: dionmaicon added for a manual bugfix-verification PR.
+    # Revert to just 'dependabot[bot]' after.
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dionmaicon'
     runs-on: ubuntu-latest
     steps:
       - uses: dionmaicon/packdev-agents@main
         with:
           test-command: "npm test"
+          # TEMPORARY, same reason as the if: above.
+          allowed-actors: "dependabot[bot],renovate[bot],dionmaicon"
           # No package-json-path — two independently-tracked Nest apps
           # (apps/gateway, apps/notifier) each get their own Dependabot PR
           # touching a different file; auto-discovery finds whichever one
