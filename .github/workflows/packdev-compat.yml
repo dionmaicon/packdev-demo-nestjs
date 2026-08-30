@@ -17,7 +17,13 @@ jobs:
     steps:
       - uses: dionmaicon/packdev-agents@main
         with:
-          test-command: "npm test"
+          # TEMPORARY (bugfix verification B): test-script instead of
+          # test-command — proves packdev's own harness-caveat detection
+          # can now see the app's real script body via --test-script,
+          # instead of being hidden behind the "npm test" indirection.
+          # Revert to test-command: "npm test" after (see the PR that
+          # changed this).
+          test-script: "test"
           # TEMPORARY, same reason as the if: above.
           allowed-actors: "dependabot[bot],renovate[bot],dionmaicon"
           # No package-json-path — two independently-tracked Nest apps
