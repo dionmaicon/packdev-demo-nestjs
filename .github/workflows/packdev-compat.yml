@@ -10,23 +10,12 @@ permissions:
 
 jobs:
   compat:
-    # TEMPORARY: dionmaicon added for manual known-scenario test PRs (no
-    # waiting on Dependabot's own version picks). Revert to just
-    # 'dependabot[bot]' after testing.
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dionmaicon'
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: dionmaicon/packdev-agents@main
         with:
-          # TEMPORARY (test 2/4 only): the literal underlying command, not
-          # "npm test" — packdev's own TYPE_CHECK_ONLY/TRANSPILE_ONLY
-          # caveat detection pattern-matches the literal --test string, so
-          # it can never see through an "npm test" indirection layer to
-          # notice the app's actual script is a bare tsc invocation. Revert
-          # to "npm test" after this test (see the PR that changed this).
-          test-command: "npx tsc --noEmit"
-          # TEMPORARY, same reason as the if: above.
-          allowed-actors: "dependabot[bot],renovate[bot],dionmaicon"
+          test-command: "npm test"
           # No package-json-path — two independently-tracked Nest apps
           # (apps/gateway, apps/notifier) each get their own Dependabot PR
           # touching a different file; auto-discovery finds whichever one
