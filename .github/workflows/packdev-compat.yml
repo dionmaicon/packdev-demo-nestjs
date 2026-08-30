@@ -18,7 +18,13 @@ jobs:
     steps:
       - uses: dionmaicon/packdev-agents@main
         with:
-          test-command: "npm test"
+          # TEMPORARY (test 2/4 only): the literal underlying command, not
+          # "npm test" — packdev's own TYPE_CHECK_ONLY/TRANSPILE_ONLY
+          # caveat detection pattern-matches the literal --test string, so
+          # it can never see through an "npm test" indirection layer to
+          # notice the app's actual script is a bare tsc invocation. Revert
+          # to "npm test" after this test (see the PR that changed this).
+          test-command: "npx tsc --noEmit"
           # TEMPORARY, same reason as the if: above.
           allowed-actors: "dependabot[bot],renovate[bot],dionmaicon"
           # No package-json-path — two independently-tracked Nest apps
