@@ -10,7 +10,7 @@
     "test": "node --test dist/test/**/*.test.js"
   },
   "dependencies": {
-    "@nestjs/common": "11.0.21",
+    "@nestjs/common": "12.0.1",
     "@nestjs/core": "11.0.21",
     "@nestjs/platform-express": "11.0.21",
     "reflect-metadata": "^0.2.2",
